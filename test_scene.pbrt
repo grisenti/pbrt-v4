@@ -1,0 +1,31 @@
+LookAt 0 2 -2
+    0 0 0
+    0 1 0
+Camera "perspective" "float fov" 45
+
+Sampler "halton" "integer pixelsamples" 32
+Integrator "volpath"
+Film "rgb" "string filename" "test_scene.png"
+     "integer xresolution" [400] "integer yresolution" [400]
+
+TransformTimes 0 1
+
+WorldBegin
+
+LightSource "distant" "point3 from" [0 0 0] "point3 to" [0 -1 0]
+
+AttributeBegin
+  Material "diffuse" "rgb reflectance" [ .7 .2 .2 ]
+  ActiveTransform StartTime
+  Translate -0.2 0 0
+  ActiveTransform EndTime
+  Translate 0.2 0 0
+  ActiveTransform All
+  Shape "sphere" "float radius" 0.5
+AttributeEnd
+
+AttributeBegin
+  Material "diffuse" "rgb reflectance" [ .0 .5 .5 ]
+  Translate 0 -1 0
+  Shape "bilinearmesh" "point3 P" [ -20 0 -20   20 0 -20   -20 0 20   20 0 20 ]
+AttributeEnd

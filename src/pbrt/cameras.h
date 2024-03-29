@@ -148,6 +148,15 @@ class CameraBase {
     PBRT_CPU_GPU
     Float SampleTime(Float u) const { return Lerp(u, shutterOpen, shutterClose); }
 
+    PBRT_CPU_GPU
+    Float SampleRollingShutterTime(Float u, Float filmY) const {
+        constexpr Float delta = 0.1;
+        const Float mid = (Float(film.FullResolution().y) - filmY) / (Float(film.FullResolution().y));
+        const Float min = std::max(mid - delta, shutterOpen);
+        const Float max = std::min(mid + delta, shutterClose);
+        return (max - min) * u + min;
+    }
+
     void InitMetadata(ImageMetadata *metadata) const;
     std::string ToString() const;
 

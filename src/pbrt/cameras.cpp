@@ -406,8 +406,7 @@ pstd::optional<CameraRay> PerspectiveCamera::GenerateRay(
     // Compute raster and camera sample positions
     Point3f pFilm = Point3f(sample.pFilm.x, sample.pFilm.y, 0);
     Point3f pCamera = cameraFromRaster(pFilm);
-
-    Ray ray(Point3f(0, 0, 0), Normalize(Vector3f(pCamera)), SampleTime(sample.time),
+    Ray ray(Point3f(0, 0, 0), Normalize(Vector3f(pCamera)), SampleRollingShutterTime(sample.time, pFilm.y),
             medium);
     // Modify ray for depth of field
     if (lensRadius > 0) {
@@ -432,7 +431,7 @@ pstd::optional<CameraRayDifferential> PerspectiveCamera::GenerateRayDifferential
     Point3f pFilm = Point3f(sample.pFilm.x, sample.pFilm.y, 0);
     Point3f pCamera = cameraFromRaster(pFilm);
     Vector3f dir = Normalize(Vector3f(pCamera.x, pCamera.y, pCamera.z));
-    RayDifferential ray(Point3f(0, 0, 0), dir, SampleTime(sample.time), medium);
+    RayDifferential ray(Point3f(0, 0, 0), dir, SampleRollingShutterTime(sample.time, pFilm.y), medium);
     // Modify ray for depth of field
     if (lensRadius > 0) {
         // Sample point on lens
